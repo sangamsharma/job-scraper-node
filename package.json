@@ -1,0 +1,16 @@
+{
+  "name": "job-scraper-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "pg": "^8.11.1",
+    "playwright": "^1.43.1",
+    "playwright-extra": "^4.3.2",
+    "playwright-extra-plugin-stealth": "^2.11.2"
+  }
+}
