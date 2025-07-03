@@ -1,14 +1,17 @@
-FROM node:20-slim
+# ✅ Use Playwright base image with all dependencies pre-installed
+FROM mcr.microsoft.com/playwright:v1.43.1-jammy
+
 WORKDIR /app
 
-# Install required system dependencies for Playwright
-RUN apt-get update && apt-get install -y wget gnupg ca-certificates fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatk1.0-0 libcups2 libdbus-1-3 libgdk-pixbuf2.0-0 libnspr4 libnss3 libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 xdg-utils libu2f-udev libvulkan1 libxss1 && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
+# Install app dependencies
 COPY package*.json ./
 RUN npm install
-RUN npx playwright install --with-deps
 
+# Copy app source code
 COPY . .
 
+# Set environment variable for production (optional)
+ENV NODE_ENV=production
+
+# Start the scraper
 CMD ["node", "index.js"]
