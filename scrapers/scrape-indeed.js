@@ -1,10 +1,10 @@
-import { chromium } from 'playwright-extra';
-import StealthPlugin from 'playwright-extra-plugin-stealth';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import dotenv from 'dotenv';
 import pool from '../db.js';
 
 dotenv.config();
-chromium.use(StealthPlugin());
+puppeteer.use(StealthPlugin());
 
 async function retry(fn, retries = 3) {
   for (let attempt = 1; attempt <= retries; attempt++) {
@@ -18,10 +18,11 @@ async function retry(fn, retries = 3) {
 }
 
 async function scrapeIndeed() {
-  const proxy = process.env.PROXY ? { proxy: { server: process.env.PROXY } } : {};
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext(proxy);
-  const page = await context.newPage();
+  const proxyUrl = process.env.PROXY ? `--proxy-server=${process.env.PROXY}` : null;
+  const args = proxyUrl ? [proxyUrl] : [];
+
+  const browser = await puppeteer.launch({ headless: true, args });
+  const page = await browser.newPage();
   const results = [];
 
   for (let start = 0; start < 30; start += 10) {
@@ -29,7 +30,7 @@ async function scrapeIndeed() {
     console.log(`Scraping: ${url}`);
 
     await retry(async () => {
-      await page.goto(url, { timeout: 60000 });
+      await page.goto(url, { timeout: 60000, waitUntil: 'domcontentloaded' });
       await page.waitForSelector('.job_seen_beacon', { timeout: 15000 });
 
       const jobs = await page.$$eval('.job_seen_beacon', cards =>
