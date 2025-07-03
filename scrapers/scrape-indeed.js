@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-extra';
-import StealthPlugin from 'playwright-extra-plugin-stealth-evasive';
+import StealthPlugin from 'playwright-extra-plugin-stealth';
 import dotenv from 'dotenv';
 import pool from '../db.js';
 
