@@ -1,5 +1,6 @@
 // Entry point
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const scrapeIndeed = require('./scrapers/scrape-indeed');
 const scrapeSeek = require('./scrapers/scrape-seek');
 
