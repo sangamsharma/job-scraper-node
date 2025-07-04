@@ -1,3 +1,7 @@
+"overrides": {
+  "rimraf": "^4.4.1",
+  "glob": "^10.3.10"
+}
 {
   "name": "job-scraper-node",
   "version": "1.0.0",
